@@ -64,3 +64,8 @@ module.exports = (robot) ->
             res.send nomulish
     else
       robot.brain.set 'totalNomulishCount', nomulishCount+1
+  robot.respond /nomulish set counter max$/i, (res) ->
+    robot.brain.set 'totalNomulishCount', 255
+    msg.send 'set counter 255'
+robot.respond /nomulish show counter$/i, (res) ->
+  msg.send robot.brain.get('totalNomulishCount')

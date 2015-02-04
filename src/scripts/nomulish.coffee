@@ -19,16 +19,14 @@ request = require 'request'
 cheerio = require 'cheerio'
 
 module.exports = (robot) ->
-  robot.respond /set\s+nomulish\s+counter\s+max$/i, (res) ->
-    msg.send 'listen'
-    robot.brain.set 'totalNomulishCount', 64
-    msg.reply 'set counter 64'
-  robot.respond /show\s+nomulish\s+counter$/i, (res) ->
-    msg.send 'listen'
+  robot.respond /set\s+nomulish\s+counter\s+max$/i, (msg) ->
+    robot.brain.set 'totalNomulishCount', 255
+    msg.reply 'set counter 255'
+  robot.respond /show\s+nomulish\s+counter$/i, (msg) ->
     msg.reply "value is " + (robot.brain.get('totalNomulishCount') || 'nil')
-  robot.respond /nomulish\s+(.*?)(\s+l([1-5])\s*)?$/i, (res) ->
+  robot.respond /nomulish\s+(.*?)$/i, (res) ->
     words = res.match[1]
-    level = res.match[3] || process.env.HUBOT_NOMULISH_LEVEL || '4'
+    level = '4'
     request
       .post
         url: 'http://racing-lagoon.info/nomu/translate.php'
@@ -44,9 +42,9 @@ module.exports = (robot) ->
           $ = cheerio.load body
           nomulish = $('textarea[name=after]').val()
           res.send nomulish
-  robot.hear /(.*です.*)/i, (msg) ->
+  robot.hear /(.*)/i, (res) ->
     nomulishCount = robot.brain.get('totalNomulishCount') * 1 or 0
-    if nomulishCount > 64
+    if nomulishCount > 255
       robot.brain.set 'totalNomulishCount', 0
       words = res.match[0]
       level = '4'

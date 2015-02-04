@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/emanon001/hubot-nomulish",
   "dependencies": {
+    "hubot": "^2.11.0",
     "request": "^2.37.0",
     "cheerio": "0.17.0"
   },

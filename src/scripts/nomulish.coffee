@@ -21,7 +21,7 @@ cheerio = require 'cheerio'
 module.exports = (robot) ->
   robot.respond /set\s+nomulish\s+counter\s+max$/i, (res) ->
     msg.send 'listen'
-      robot.brain.set 'totalNomulishCount', 64
+    robot.brain.set 'totalNomulishCount', 64
     msg.reply 'set counter 64'
   robot.respond /show\s+nomulish\s+counter$/i, (res) ->
     msg.send 'listen'

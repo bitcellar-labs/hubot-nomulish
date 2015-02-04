@@ -19,17 +19,14 @@ request = require 'request'
 cheerio = require 'cheerio'
 
 module.exports = (robot) ->
-  robot.respond "set nomulish counter max", (res) ->
-    robot.brain.set 'totalNomulishCount', 255
-    msg.send 'set counter 255'
-
-  robot.respond "show nomulish counter", (res) ->
-    msg.send "value is " + (robot.brain.get('totalNomulishCount') || 'nil')
-
+  robot.respond /nomulish set counter max/, (res) ->
+    robot.brain.set 'totalNomulishCount', 64
+    msg.reply 'set counter 64'
+  robot.respond /nomulish show counter/, (res) ->
+    msg.reply "value is " + (robot.brain.get('totalNomulishCount') || 'nil')
   robot.respond /nomulish\s+(.*?)(\s+l([1-5])\s*)?$/i, (res) ->
     words = res.match[1]
     level = res.match[3] || process.env.HUBOT_NOMULISH_LEVEL || '4'
-
     request
       .post
         url: 'http://racing-lagoon.info/nomu/translate.php'
@@ -42,15 +39,12 @@ module.exports = (robot) ->
             robot.logger.error e.message
             res.send 'failed translate'
             return
-
           $ = cheerio.load body
           nomulish = $('textarea[name=after]').val()
           res.send nomulish
-
-  robot.hear /(.*)/i, (msg) ->
+  robot.hear /(.*です.*)/i, (msg) ->
     nomulishCount = robot.brain.get('totalNomulishCount') * 1 or 0
-    msg.send nomulishCount
-    if nomulishCount > 255
+    if nomulishCount > 64
       robot.brain.set 'totalNomulishCount', 0
       words = res.match[0]
       level = '4'
@@ -66,7 +60,6 @@ module.exports = (robot) ->
               robot.logger.error e.message
               res.send 'failed translate'
               return
-
             $ = cheerio.load body
             nomulish = $('textarea[name=after]').val()
             res.send nomulish

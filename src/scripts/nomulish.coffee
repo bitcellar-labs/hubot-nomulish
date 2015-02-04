@@ -19,10 +19,10 @@ request = require 'request'
 cheerio = require 'cheerio'
 
 module.exports = (robot) ->
-  robot.respond /nomulishsetcountermax/, (res) ->
+  robot.respond "set nomulish-counter max", (res) ->
     robot.brain.set 'totalNomulishCount', 64
     msg.reply 'set counter 64'
-  robot.respond /nomulishshowcounter/, (res) ->
+  robot.respond "show nomulish-counter", (res) ->
     msg.reply "value is " + (robot.brain.get('totalNomulishCount') || 'nil')
   robot.respond /nomulish\s+(.*?)(\s+l([1-5])\s*)?$/i, (res) ->
     words = res.match[1]

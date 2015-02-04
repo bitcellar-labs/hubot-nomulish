@@ -19,6 +19,13 @@ request = require 'request'
 cheerio = require 'cheerio'
 
 module.exports = (robot) ->
+  robot.respond /nomulish set counter max$/i, (res) ->
+    robot.brain.set 'totalNomulishCount', 255
+    msg.send 'set counter 255'
+
+  robot.respond /nomulish show counter$/i, (res) ->
+    msg.send robot.brain.get('totalNomulishCount')
+
   robot.respond /nomulish\s+(.*?)(\s+l([1-5])\s*)?$/i, (res) ->
     words = res.match[1]
     level = res.match[3] || process.env.HUBOT_NOMULISH_LEVEL || '4'
@@ -39,6 +46,7 @@ module.exports = (robot) ->
           $ = cheerio.load body
           nomulish = $('textarea[name=after]').val()
           res.send nomulish
+
   robot.hear /(.*)/i, (msg) ->
     nomulishCount = robot.brain.get('totalNomulishCount') * 1 or 0
     msg.send nomulishCount
@@ -64,8 +72,3 @@ module.exports = (robot) ->
             res.send nomulish
     else
       robot.brain.set 'totalNomulishCount', nomulishCount+1
-  robot.respond /nomulish set counter max$/i, (res) ->
-    robot.brain.set 'totalNomulishCount', 255
-    msg.send 'set counter 255'
-  robot.respond /nomulish show counter$/i, (res) ->
-    msg.send robot.brain.get('totalNomulishCount')

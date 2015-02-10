@@ -20,8 +20,8 @@ cheerio = require 'cheerio'
 
 module.exports = (robot) ->
   robot.respond /set\s+nomulish\s+counter\s+max$/i, (msg) ->
-    robot.brain.set 'totalNomulishCount', 255
-    msg.reply 'set counter 255'
+    robot.brain.set 'totalNomulishCount', 64
+    msg.reply 'set counter 64'
   robot.respond /show\s+nomulish\s+counter$/i, (msg) ->
     msg.reply "value is " + (robot.brain.get('totalNomulishCount') || 'nil')
   robot.respond /nomulish\s+(.*?)$/i, (res) ->
@@ -44,7 +44,7 @@ module.exports = (robot) ->
           res.send nomulish
   robot.hear /(.*)/i, (res) ->
     nomulishCount = robot.brain.get('totalNomulishCount') * 1 or 0
-    if nomulishCount > 255
+    if nomulishCount > 64
       robot.brain.set 'totalNomulishCount', 0
       words = res.match[0]
       level = '4'
